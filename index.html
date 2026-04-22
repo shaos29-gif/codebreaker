@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NOI Gold Training — Final Synchronized</title>
+<title>NOI Gold Training — Foundation & Vision</title>
 <style>
   :root {
     --bg: #0b0e17; --surface: #111520; --surface2: #161b28; --surface3: #1c2235;
@@ -13,6 +13,18 @@
   body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.5; }
   .container { max-width: 1200px; margin: 0 auto; }
   
+  /* Vision Section Style */
+  .vision-header { 
+    background: linear-gradient(135deg, var(--surface2) 0%, var(--surface3) 100%);
+    padding: 30px; 
+    border-radius: 16px; 
+    margin-bottom: 20px; 
+    border: 1px solid var(--blue);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .vision-title { color: var(--blue); font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+  .vision-text { font-size: 1.4rem; font-weight: 600; color: var(--text); line-height: 1.4; }
+
   .header-card { background: var(--surface2); padding: 25px; border-radius: 16px; margin-bottom: 30px; border: 1px solid var(--border); display: flex; gap: 40px; }
   .stat-group { flex: 1; }
   .stat-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; font-weight: 700; letter-spacing: 1px; }
@@ -51,14 +63,21 @@
 <body>
 
 <div class="container">
+  <div class="vision-header">
+    <div class="vision-title">18-Month Project Vision</div>
+    <div class="vision-text">
+        "To master competitive programming through consistent practice and logical excellence, aiming for NOI gold proficiency."
+    </div>
+  </div>
+
   <div class="header-card">
     <div class="stat-group">
-        <div class="stat-label">NOI Syllabus Mastery</div>
+        <div class="stat-label">Syllabus Mastery</div>
         <div class="stat-val" id="syl-text">0/28 Topics</div>
         <div class="progress-bg"><div id="syl-fill" class="progress-fill" style="background: var(--green)"></div></div>
     </div>
     <div class="stat-group">
-        <div class="stat-label">Current Phase 1 Progress</div>
+        <div class="stat-label">Phase 1 Execution</div>
         <div class="stat-val" id="p1-text">0%</div>
         <div class="progress-bg"><div id="p1-fill" class="progress-fill"></div></div>
     </div>
@@ -93,7 +112,6 @@
 </div>
 
 <script>
-// Session Data for Phase 1
 const phase1Sessions = [
   { week: 1, 
     thu: { date: "Thu Apr 23", time: "15:00 - 17:00", title: "C++ Vectors & Memory", material: "CPH 4.1 (p. 35-37)", hw: "CF 705A (Hulk) - Practice Vector Push" },
@@ -123,7 +141,7 @@ function switchTab(id) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  event.currentTarget.classList.add('active');
+  if(event) event.currentTarget.classList.add('active');
 }
 
 function updateUI() {
@@ -138,13 +156,13 @@ function updateUI() {
   const state = { session: {}, syllabus: {} };
   document.querySelectorAll('.sess-cb').forEach(cb => state.session[cb.id] = cb.checked);
   document.querySelectorAll('.syl-cb').forEach(cb => state.syllabus[cb.id] = cb.checked);
-  localStorage.setItem('noi_gold_final_v1', JSON.stringify(state));
+  localStorage.setItem('noi_gold_vision_v1', JSON.stringify(state));
 }
 
 function init() {
   const p1 = document.getElementById('phase1-list');
   const syl = document.getElementById('syllabus-container');
-  const saved = JSON.parse(localStorage.getItem('noi_gold_final_v1')) || { session: {}, syllabus: {} };
+  const saved = JSON.parse(localStorage.getItem('noi_gold_vision_v1')) || { session: {}, syllabus: {} };
 
   phase1Sessions.forEach(w => {
     p1.innerHTML += `
