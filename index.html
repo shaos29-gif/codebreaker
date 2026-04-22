@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOI Gold Training — Final Synchronized</title>
+<style>
+  :root {
+    --bg: #0b0e17; --surface: #111520; --surface2: #161b28; --surface3: #1c2235;
+    --border: #1e2640; --text: #e2e8f0; --muted: #64748b;
+    --blue: #60a5fa; --green: #34d399; --orange: #fb923c; --red: #f87171;
+  }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.5; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  
+  .header-card { background: var(--surface2); padding: 25px; border-radius: 16px; margin-bottom: 30px; border: 1px solid var(--border); display: flex; gap: 40px; }
+  .stat-group { flex: 1; }
+  .stat-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; font-weight: 700; letter-spacing: 1px; }
+  .stat-val { font-size: 1.6rem; font-weight: 800; margin: 8px 0; }
+  .progress-bg { background: var(--surface3); height: 8px; border-radius: 4px; overflow: hidden; }
+  .progress-fill { background: linear-gradient(90deg, var(--blue), var(--green)); width: 0%; height: 100%; transition: 0.6s; }
+
+  .tab-row { display: flex; gap: 5px; border-bottom: 1px solid var(--border); margin-bottom: 30px; }
+  .tab-btn { background: none; border: none; color: var(--muted); padding: 12px 20px; cursor: pointer; font-weight: 600; border-radius: 8px 8px 0 0; }
+  .tab-btn.active { color: var(--blue); border-bottom: 3px solid var(--blue); background: var(--surface); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .roadmap-item { padding: 18px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+  .roadmap-item.current { border-left: 5px solid var(--orange); background: rgba(251, 146, 60, 0.05); }
+
+  .syllabus-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .phase-box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; border-top: 4px solid var(--muted); }
+  .phase-box.active-p { border-top-color: var(--blue); }
+  .skill-item { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; font-size: 0.9rem; cursor: pointer; }
+
+  .week-label { font-size: 1.1rem; font-weight: 800; color: var(--orange); margin: 30px 0 15px 0; display: block; }
+  .session-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .session-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 22px; position: relative; transition: 0.2s; }
+  .session-card.done { border-color: var(--green); opacity: 0.6; }
+  
+  .badge { font-size: 0.65rem; font-weight: 800; padding: 4px 10px; border-radius: 6px; text-transform: uppercase; margin-right: 5px; background: var(--surface3); color: var(--blue); }
+  .badge-orange { color: var(--orange); background: rgba(251, 146, 60, 0.1); }
+
+  .detail-label { font-size: 0.7rem; color: var(--muted); font-weight: 700; text-transform: uppercase; margin-top: 15px; margin-bottom: 4px; }
+  .hw-card { background: var(--surface2); padding: 12px; border-radius: 8px; border-left: 3px solid var(--red); color: var(--text); font-size: 0.9rem; font-weight: 500; }
+
+  @media (max-width: 850px) { .session-grid { grid-template-columns: 1fr; } .header-card { flex-direction: column; } }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header-card">
+    <div class="stat-group">
+        <div class="stat-label">NOI Syllabus Mastery</div>
+        <div class="stat-val" id="syl-text">0/28 Topics</div>
+        <div class="progress-bg"><div id="syl-fill" class="progress-fill" style="background: var(--green)"></div></div>
+    </div>
+    <div class="stat-group">
+        <div class="stat-label">Current Phase 1 Progress</div>
+        <div class="stat-val" id="p1-text">0%</div>
+        <div class="progress-bg"><div id="p1-fill" class="progress-fill"></div></div>
+    </div>
+  </div>
+  
+  <div class="tab-row">
+    <button class="tab-btn active" onclick="switchTab('roadmap')">1. Overall Plan</button>
+    <button class="tab-btn" onclick="switchTab('syllabus')">2. Key Topics</button>
+    <button class="tab-btn" onclick="switchTab('phase1')">3. Phase 1 Tracker</button>
+  </div>
+
+  <div id="roadmap" class="tab-content active">
+    <div class="roadmap-item current">
+        <div><strong>Phase 1: Foundations (STL)</strong><br><small>Essential C++ Syntax & STL Containers</small></div>
+        <div><span class="badge">Apr — Jun 2026</span></div>
+    </div>
+    <div class="roadmap-item"><div><strong>Phase 2: Greedy & Searching</strong></div><div><span class="badge">Jul — Aug 2026</span></div></div>
+    <div class="roadmap-item"><div><strong>Phase 3: Complete Search</strong></div><div><span class="badge">Sep — Oct 2026</span></div></div>
+    <div class="roadmap-item"><div><strong>Phase 4: Dynamic Programming</strong></div><div><span class="badge">Nov — Feb 2027</span></div></div>
+    <div class="roadmap-item"><div><strong>Phase 5: Graph Theory</strong></div><div><span class="badge">Mar — May 2027</span></div></div>
+    <div class="roadmap-item"><div><strong>Phase 6: Advanced DS</strong></div><div><span class="badge">Jun — Aug 2027</span></div></div>
+    <div class="roadmap-item"><div><strong>Phase 7: Finals Mastery</strong></div><div><span class="badge">Sep — Oct 2027</span></div></div>
+  </div>
+
+  <div id="syllabus" class="tab-content">
+    <div class="syllabus-grid" id="syllabus-container"></div>
+  </div>
+
+  <div id="phase1" class="tab-content">
+    <div id="phase1-list"></div>
+  </div>
+</div>
+
+<script>
+// Session Data for Phase 1
+const phase1Sessions = [
+  { week: 1, 
+    thu: { date: "Thu Apr 23", time: "15:00 - 17:00", title: "C++ Vectors & Memory", material: "CPH 4.1 (p. 35-37)", hw: "CF 705A (Hulk) - Practice Vector Push" },
+    sun: { date: "Sun Apr 26", time: "19:00 - 21:00", title: "Iterators & Ranges", material: "CPH 4.4 (p. 39-40)", hw: "CF 263A (Beautiful Matrix)" }
+  },
+  { week: 2, 
+    thu: { date: "Thu Apr 30", time: "15:00 - 17:00", title: "Time Complexity (Big O)", material: "CPH 3.1 (p. 25-28)", hw: "CF 112A (Petya & Strings)" },
+    sun: { date: "Sun May 03", time: "19:00 - 21:00", title: "Sorting & Comparators", material: "CPH 3.2 (p. 29-30)", hw: "Codebreaker: 'sorting' problem" }
+  },
+  { week: 3, 
+    thu: { date: "Thu May 07", time: "15:00 - 17:00", title: "Binary Search Logic", material: "CPH 3.3 (p. 31-32)", hw: "Write iterative search without STL" },
+    sun: { date: "Sun May 10", time: "19:00 - 21:00", title: "Binary Search (Answer Space)", material: "CPH 3.3 (p. 33-34)", hw: "CF 706B (Interesting Drink)" }
+  }
+];
+
+const masterPhases = [
+  { name: "Phase 1: Foundations", skills: ["C++ STL Mastery", "Big O Complexity", "Standard Sorting", "Basic I/O Speed"] },
+  { name: "Phase 2: Searching", skills: ["Binary Search", "Two Pointers", "Greedy Logic", "Coordinate Compression"] },
+  { name: "Phase 3: Brute Force", skills: ["Subsets/Permutations", "Backtracking", "Bitmasking", "Pruning Logic"] },
+  { name: "Phase 4: DP", skills: ["Classic DP", "Knapsack", "Grid DP", "State Space Reduction"] },
+  { name: "Phase 5: Graphs", skills: ["DFS / BFS", "Dijkstra", "MST (Kruskal)", "Tree Queries"] },
+  { name: "Phase 6: Advanced DS", skills: ["Segment Trees", "Fenwick Trees", "DSU", "2D Prefix Sums"] },
+  { name: "Phase 7: Finals", skills: ["NOI Mock Papers", "Debugging Flow", "Speed Strategies", "Problem Triage"] }
+];
+
+function switchTab(id) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+function updateUI() {
+  const sessDone = document.querySelectorAll('.sess-cb:checked').length;
+  document.getElementById('p1-fill').style.width = Math.round((sessDone / 6) * 100) + '%';
+  document.getElementById('p1-text').innerText = Math.round((sessDone / 6) * 100) + '%';
+  
+  const sylDone = document.querySelectorAll('.syl-cb:checked').length;
+  document.getElementById('syl-fill').style.width = Math.round((sylDone / 28) * 100) + '%';
+  document.getElementById('syl-text').innerText = `${sylDone}/28 Topics`;
+  
+  const state = { session: {}, syllabus: {} };
+  document.querySelectorAll('.sess-cb').forEach(cb => state.session[cb.id] = cb.checked);
+  document.querySelectorAll('.syl-cb').forEach(cb => state.syllabus[cb.id] = cb.checked);
+  localStorage.setItem('noi_gold_final_v1', JSON.stringify(state));
+}
+
+function init() {
+  const p1 = document.getElementById('phase1-list');
+  const syl = document.getElementById('syllabus-container');
+  const saved = JSON.parse(localStorage.getItem('noi_gold_final_v1')) || { session: {}, syllabus: {} };
+
+  phase1Sessions.forEach(w => {
+    p1.innerHTML += `
+      <span class="week-label">Week ${w.week} Execution Plan</span>
+      <div class="session-grid">
+        ${renderCard(w.thu, 'thu', saved.session)}
+        ${renderCard(w.sun, 'sun', saved.session)}
+      </div>`;
+  });
+
+  masterPhases.forEach((p, i) => {
+    let h = `<div class="phase-box ${i===0?'active-p':''}"><h3>${p.name}</h3>`;
+    p.skills.forEach(s => {
+      const id = 'syl-' + s.replace(/\s+/g, '').toLowerCase();
+      h += `<label class="skill-item"><input type="checkbox" id="${id}" class="syl-cb" ${saved.syllabus[id]?'checked':''} onchange="updateUI()"> ${s}</label>`;
+    });
+    syl.innerHTML += h + `</div>`;
+  });
+  updateUI();
+}
+
+function renderCard(s, day, saved) {
+  const id = `s-${s.date.replace(/\s+/g, '')}`;
+  const done = saved[id];
+  return `
+    <div class="session-card ${done?'done':''}" id="card-${id}">
+      <input type="checkbox" id="${id}" class="sess-cb" ${done?'checked':''} onchange="toggleCard('${id}')" style="position:absolute; top:20px; right:20px; width:20px; height:20px; accent-color:var(--green);">
+      <div style="margin-bottom:12px;">
+        <span class="badge">${s.date}</span>
+        <span class="badge badge-orange">${s.time}</span>
+      </div>
+      <div style="font-weight:800; font-size:1.05rem; margin-bottom:10px;">${s.title}</div>
+      <div class="detail-label">📖 Material</div>
+      <div style="font-size:0.9rem; margin-bottom:10px;">${s.material}</div>
+      <div class="detail-label">💻 Homework</div>
+      <div class="hw-card">${s.hw}</div>
+    </div>`;
+}
+
+function toggleCard(id) {
+  document.getElementById('card-'+id).classList.toggle('done');
+  updateUI();
+}
+
+init();
+</script>
+</body>
+</html>
