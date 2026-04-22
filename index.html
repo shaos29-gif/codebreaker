@@ -3,118 +3,163 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NOI Gold Path — Training Dashboard</title>
+<title>NOI Gold Path — Training Plan</title>
 <style>
-  /* I've kept your exact CSS variables and styling here */
   :root {
     --bg: #0b0e17; --surface: #111520; --surface2: #161b28; --surface3: #1c2235;
-    --border: #1e2640; --border2: #253050; --text: #e2e8f0; --muted: #64748b;
-    --subtle: #94a3b8; --blue: #60a5fa; --blue-dim: rgba(96,165,250,0.12);
-    --green: #34d399; --green-dim: rgba(52,211,153,0.12); --purple: #c084fc;
-    --purple-dim: rgba(192,132,252,0.12); --orange: #fb923c; --orange-dim: rgba(251,146,60,0.12);
-    --red: #f87171; --yellow: #fbbf24;
+    --border: #1e2640; --text: #e2e8f0; --muted: #64748b;
+    --blue: #60a5fa; --green: #34d399; --orange: #fb923c;
   }
-  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 24px 16px 64px; }
+  body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); padding: 20px; line-height: 1.6; }
+  .container { max-width: 1000px; margin: 0 auto; }
   
-  /* Tabs & Layout */
-  .tab-row { display: flex; gap: 10px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
-  .tab-btn { background: none; border: none; color: var(--muted); padding: 10px; cursor: pointer; font-weight: bold; }
+  .tab-row { display: flex; gap: 15px; border-bottom: 1px solid var(--border); margin-bottom: 25px; }
+  .tab-btn { background: none; border: none; color: var(--muted); padding: 12px; cursor: pointer; font-weight: 600; }
   .tab-btn.active { color: var(--blue); border-bottom: 2px solid var(--blue); }
   .tab-content { display: none; }
   .tab-content.active { display: block; }
+
+  .phase-header { background: var(--surface2); padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid var(--blue); }
+  .roadmap-table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 8px; overflow: hidden; }
+  .roadmap-table th, .roadmap-table td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+  .roadmap-table th { background: var(--surface3); color: var(--blue); }
+
+  .week-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 20px; overflow: hidden; }
+  .week-header { padding: 12px 20px; background: var(--surface3); font-weight: bold; border-bottom: 1px solid var(--border); color: var(--orange); }
+  .week-body { padding: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   
-  .section { max-width: 960px; margin: 0 auto 24px; }
-  .section-title { font-size: 0.8rem; text-transform: uppercase; color: var(--muted); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .session-box { background: rgba(255,255,255,0.02); padding: 15px; border-radius: 8px; border: 1px solid var(--border); }
+  .session-date { font-size: 0.75rem; color: var(--blue); font-weight: bold; margin-bottom: 8px; display: block; }
+  .tag { display: inline-block; background: rgba(96,165,250,0.1); color: var(--blue); padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; margin-bottom: 10px; border: 1px solid rgba(96,165,250,0.2); }
+  
+  ul { padding-left: 18px; margin: 10px 0 0; color: var(--muted); font-size: 0.85rem; }
+  li { margin-bottom: 6px; }
+  strong { color: var(--text); }
 
-  .week-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; padding: 15px; display: flex; align-items: center; gap: 15px; }
-  .wch-num { width: 40px; height: 40px; background: var(--surface3); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--blue); }
-  .wch-title { font-weight: bold; font-size: 1rem; margin-bottom: 4px; }
-  .wch-topics { font-size: 0.85rem; color: var(--subtle); }
-
-  /* Progress Bar */
-  .progress-track { height: 8px; background: var(--surface2); border-radius: 4px; overflow: hidden; margin: 10px 0; }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--blue)); width: 0%; transition: width 0.5s; }
+  @media (max-width: 768px) { .week-body { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 
-<div class="section">
-  <h1 style="background: linear-gradient(135deg, #60a5fa, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">🥇 NOI Gold 18-Month Roadmap</h1>
-  <p style="color: var(--muted); font-size: 0.9rem;">Sec 1 Training Plan · Thu 3-5pm & Sun 7-9pm</p>
-</div>
-
-<div class="section" style="display: flex; gap: 10px;">
-  <div style="flex: 1; background: var(--surface); padding: 15px; border-radius: 10px; text-align: center;">
-    <div id="progress-percent" style="font-size: 1.5rem; font-weight: bold; color: var(--green);">0%</div>
-    <div style="font-size: 0.7rem; color: var(--muted);">TOTAL PROGRESS</div>
-  </div>
-  <div style="flex: 1; background: var(--surface); padding: 15px; border-radius: 10px; text-align: center;">
-    <div style="font-size: 1.5rem; font-weight: bold; color: var(--blue);">7</div>
-    <div style="font-size: 0.7rem; color: var(--muted);">PHASES</div>
-  </div>
-</div>
-
-<div class="section">
-  <div class="progress-track"><div class="progress-fill" id="main-progress"></div></div>
-</div>
-
-<div class="section">
+<div class="container">
+  <h1>🥇 NOI Gold Training Dashboard</h1>
+  
   <div class="tab-row">
-    <button class="tab-btn active" onclick="showTab('schedule')">🗓 Schedule</button>
-    <button class="tab-btn" onclick="showTab('structure')">📐 Structure</button>
+    <button class="tab-btn active" onclick="switchTab('roadmap')">1. 18-Month Roadmap</button>
+    <button class="tab-btn" onclick="switchTab('phase1')">2. Phase 1 Tracker</button>
   </div>
 
-  <div id="schedule" class="tab-content active">
-    <div id="week-list"></div>
+  <div id="roadmap" class="tab-content active">
+    <div class="phase-header"><strong>The Path to Gold: 7 Key Milestones</strong></div>
+    <table class="roadmap-table">
+      <thead>
+        <tr><th>Phase</th><th>Topic</th><th>Duration</th><th>Goal</th></tr>
+      </thead>
+      <tbody id="roadmap-body"></tbody>
+    </table>
   </div>
 
-  <div id="structure" class="tab-content">
-    <div class="week-card">
-      <div>
-        <div class="wch-title">Thursday (3:00 - 5:00 PM)</div>
-        <div class="wch-topics">New Concept Teaching + Live Practice</div>
-      </div>
+  <div id="phase1" class="tab-content">
+    <div class="phase-header" style="border-left-color: var(--orange);">
+      <strong>Phase 1: STL & Core Logic</strong> (Apr 24 – Jun 18)
     </div>
-    <div class="week-card">
-      <div>
-        <div class="wch-title">Sunday (7:00 - 9:00 PM)</div>
-        <div class="wch-topics">Homework Review + Advanced Application</div>
-      </div>
-    </div>
+    <div id="phase1-list"></div>
   </div>
 </div>
 
 <script>
-  const roadmap = [
-    { phase: "1", title: "STL & Sorting", topics: "std::sort, Vectors, Pairs, Custom Comparators" },
-    { phase: "2", title: "Binary Search", topics: "Lower/Upper Bound, Searching on Answers" },
-    { phase: "3", title: "Complete Search", topics: "Recursion, Bitmasking, Permutations" },
-    { phase: "4", title: "Dynamic Programming I", topics: "Memoization, Knapsack, LIS" },
-    { phase: "5", title: "Graph Foundations", topics: "BFS, DFS, Dijkstra, MST" },
-    { phase: "6", title: "Range Queries", topics: "Segment Trees, Fenwick Trees" },
-    { phase: "7", title: "Mastery", topics: "NOI Past Papers, APIO, Mock Contests" }
-  ];
+function switchTab(id) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
 
-  function showTab(id) {
-    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    event.currentTarget.classList.add('active');
+const fullRoadmap = [
+  { p: 1, title: "STL & Core Logic", dur: "Apr-Jun '26", goal: "Master std::sort, vectors, and basic logic." },
+  { p: 2, title: "Searching & Greedy", dur: "Jul-Aug '26", goal: "Binary Search and Greedy optimization." },
+  { p: 3, title: "Complete Search", dur: "Sep-Oct '26", goal: "Recursion, Backtracking, and Bitmasking." },
+  { p: 4, title: "Dynamic Programming I", dur: "Nov-Feb '27", goal: "Memoization and classic DP patterns." },
+  { p: 5, title: "Graph Foundations", dur: "Mar-May '27", goal: "BFS, DFS, Dijkstra, and MST." },
+  { p: 6, title: "Range Queries", dur: "Jun-Aug '27", goal: "Segment Trees and Fenwick Trees." },
+  { p: 7, title: "Mastery & NOI Prep", dur: "Sep-Oct '27", goal: "Past Papers & Mock Contests." }
+];
+
+const phase1Weeks = [
+  {
+    week: 1,
+    thu: { concept: "Vectors & Memory", title: "Introduction to std::vector", material: "USACO Guide: C++ Vectors", hw: "Reverse Input; Codeforces 705A (Hulk)" },
+    sun: { concept: "Iteration", title: "Vector Methods & Range-loops", material: "CP-Algorithms: STL", hw: "Codeforces 263A (Beautiful Matrix)" }
+  },
+  {
+    week: 2,
+    thu: { concept: "Sorting Basics", title: "std::sort & Time Complexity", material: "LearnCpp: Sorting", hw: "Codeforces 112A (Petya & Strings)" },
+    sun: { concept: "Custom Sort", title: "Structs & Comparators", material: "USACO: Sorting Structs", hw: "Sort Student Records by Grade" }
+  },
+  {
+    week: 3,
+    thu: { concept: "Fast Search", title: "Binary Search Implementation", material: "Khan Academy: Binary Search", hw: "Implement iterative Binary Search" },
+    sun: { concept: "STL Search", title: "lower_bound & upper_bound", material: "CPlusPlus Reference", hw: "Find first occurrence in sorted list" }
+  },
+  {
+    week: 4,
+    thu: { concept: "Data Packing", title: "std::pair & std::tuple", material: "GeeksForGeeks: Pair", hw: "Sort points (x, y) coordinates" },
+    sun: { concept: "Review", title: "Coordinate Compression Intro", material: "USACO Guide: Sorting Intro", hw: "Codeforces 231A (Team)" }
+  },
+  {
+    week: 5,
+    thu: { concept: "Mapping", title: "std::set & std::unordered_set", material: "USACO: Sets & Maps", hw: "Count unique elements in a list" },
+    sun: { concept: "Key-Value", title: "std::map & Frequencies", material: "CP-Algorithms: Map", hw: "Frequency count of words in text" }
+  },
+  {
+    week: 6,
+    thu: { concept: "Stacks/Queues", title: "Linear Data Structures", material: "USACO: Stacks/Queues", hw: "Codeforces 546A (Soldier & Bananas)" },
+    sun: { concept: "Applications", title: "Balanced Parentheses Problem", material: "Hackerrank: Stacks", hw: "Check if string brackets are balanced" }
+  },
+  {
+    week: 7,
+    thu: { concept: "Math Basics", title: "Modulo & Prefix Sums", material: "USACO: Prefix Sums", hw: "Range Sum Queries (O(1) approach)" },
+    sun: { concept: "Number Theory", title: "GCD & Primes", material: "CP-Algorithms: GCD", hw: "Implement Euclidean Algorithm" }
+  },
+  {
+    week: 8,
+    thu: { concept: "Final Review", title: "Phase 1 Integration", material: "All Previous Notes", hw: "Codeforces 158A (Next Round)" },
+    sun: { concept: "Assessment", title: "Mock Contest (Phase 1)", material: "AtCoder Beginner Problems", hw: "Complete 3 contest problems" }
   }
+];
 
-  const list = document.getElementById('week-list');
-  roadmap.forEach((item, index) => {
+function init() {
+  const roadBody = document.getElementById('roadmap-body');
+  fullRoadmap.forEach(item => {
+    roadBody.innerHTML += `<tr><td>${item.p}</td><td><strong>${item.title}</strong></td><td>${item.dur}</td><td>${item.goal}</td></tr>`;
+  });
+
+  const list = document.getElementById('phase1-list');
+  const startDate = new Date('2026-04-24');
+  phase1Weeks.forEach((w, i) => {
+    let thu = new Date(startDate); thu.setDate(startDate.getDate() + (i * 7));
+    let sun = new Date(thu); sun.setDate(thu.getDate() + 3);
     list.innerHTML += `
       <div class="week-card">
-        <div class="wch-num">${item.phase}</div>
-        <div>
-          <div class="wch-title">${item.title}</div>
-          <div class="wch-topics">${item.topics}</div>
+        <div class="week-header">Week ${w.week}</div>
+        <div class="week-body">
+          <div class="session-box">
+            <span class="session-date">Thursday | ${thu.toDateString()}</span>
+            <span class="tag">${w.thu.concept}</span>
+            <div><strong>${w.thu.title}</strong></div>
+            <ul><li>📖 ${w.thu.material}</li><li>📝 ${w.thu.hw}</li></ul>
+          </div>
+          <div class="session-box">
+            <span class="session-date">Sunday | ${sun.toDateString()}</span>
+            <span class="tag">${w.sun.concept}</span>
+            <div><strong>${w.sun.title}</strong></div>
+            <ul><li>📖 ${w.sun.material}</li><li>📝 ${w.sun.hw}</li></ul>
+          </div>
         </div>
-      </div>
-    `;
+      </div>`;
   });
+}
+init();
 </script>
 </body>
 </html>
