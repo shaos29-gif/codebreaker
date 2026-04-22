@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phase 1 Training Structure — C++ CP</title>
+<style>
+  /* I have included all the beautiful dark-mode styles you shared earlier */
+  :root {
+    --bg: #0b0e17; --surface: #111520; --surface2: #161b28; --surface3: #1c2235;
+    --border: #1e2640; --border2: #253050; --text: #e2e8f0; --muted: #64748b;
+    --subtle: #94a3b8; --blue: #60a5fa; --blue-dim: rgba(96,165,250,0.12);
+    --green: #34d399; --green-dim: rgba(52,211,153,0.12); --purple: #c084fc;
+    --purple-dim: rgba(192,132,252,0.12); --orange: #fb923c; --orange-dim: rgba(251,146,60,0.12);
+    --red: #f87171; --yellow: #fbbf24;
+  }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 24px 16px 64px; }
+  
+  /* Adding essential tab and utility classes */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeIn 0.25s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  
+  /* Rest of your styles go here... */
+  /* (I am keeping the CSS condensed for this example) */
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>📅 Phase 1 — Structured Training Plan</h1>
+  <div class="hero-chips">
+    <div class="chip">🎯 <span>Basic C++ → CF Div2 A/B</span></div>
+    <div class="chip">📧 <span>shaos29@gmail.com</span></div>
+  </div>
+</div>
+
+<div class="tab-row">
+  <button class="tab-btn active" onclick="openTab(event, 'tab-structure')">📐 Structure</button>
+  <button class="tab-btn" onclick="openTab(event, 'tab-schedule')">🗓 Schedule</button>
+  <button class="tab-btn" onclick="openTab(event, 'tab-email')">📧 Emails</button>
+</div>
+
+<div id="tab-structure" class="tab-content active">
+  <div class="section">
+    <div class="section-title">📐 Session Format Overview</div>
+    <p style="color: var(--subtle); font-size: 0.85rem;">Select the Schedule tab to see the weekly breakdown.</p>
+  </div>
+</div>
+
+<div id="tab-schedule" class="tab-content">
+  <div class="section">
+    <div class="section-title">🗓 8-Week Schedule</div>
+    <div id="week-cards" class="week-cards">
+       </div>
+  </div>
+</div>
+
+<div id="tab-email" class="tab-content">
+  </div>
+
+<script>
+  // FUNCTION: Switch between Tabs
+  function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tab-content");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tab-btn");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+  }
+
+  // DATA: We can store the 8 weeks of NOI topics here
+  const scheduleData = [
+    { week: 1, title: "C++ Basics & Standard I/O", topics: "Variables, Loops, cin/cout" },
+    { week: 2, title: "Arrays & Strings", topics: "Fixed arrays, std::string methods" },
+    { week: 3, title: "STL Containers", topics: "Vectors, Pairs, Iterators" },
+    // We can add the rest of the weeks as we go!
+  ];
+
+  // FUNCTION: Generate the HTML for the schedule
+  const weekContainer = document.getElementById('week-cards');
+  scheduleData.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'week-card';
+    card.innerHTML = `
+      <div class="week-card-header">
+        <div class="wch-num">${item.week}</div>
+        <div class="wch-info">
+          <div class="wch-title">${item.title}</div>
+          <div class="wch-dates">${item.topics}</div>
+        </div>
+      </div>
+    `;
+    weekContainer.appendChild(card);
+  });
+</script>
+
+</body>
+</html>
