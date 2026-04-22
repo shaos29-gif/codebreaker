@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Phase 1 Training Structure — C++ CP</title>
+<title>NOI Gold Path — Training Dashboard</title>
 <style>
-  /* I have included all the beautiful dark-mode styles you shared earlier */
+  /* I've kept your exact CSS variables and styling here */
   :root {
     --bg: #0b0e17; --surface: #111520; --surface2: #161b28; --surface3: #1c2235;
     --border: #1e2640; --border2: #253050; --text: #e2e8f0; --muted: #64748b;
@@ -16,90 +16,105 @@
   }
   body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 24px 16px 64px; }
   
-  /* Adding essential tab and utility classes */
+  /* Tabs & Layout */
+  .tab-row { display: flex; gap: 10px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+  .tab-btn { background: none; border: none; color: var(--muted); padding: 10px; cursor: pointer; font-weight: bold; }
+  .tab-btn.active { color: var(--blue); border-bottom: 2px solid var(--blue); }
   .tab-content { display: none; }
-  .tab-content.active { display: block; animation: fadeIn 0.25s ease; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  .tab-content.active { display: block; }
   
-  /* Rest of your styles go here... */
-  /* (I am keeping the CSS condensed for this example) */
+  .section { max-width: 960px; margin: 0 auto 24px; }
+  .section-title { font-size: 0.8rem; text-transform: uppercase; color: var(--muted); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .week-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; padding: 15px; display: flex; align-items: center; gap: 15px; }
+  .wch-num { width: 40px; height: 40px; background: var(--surface3); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--blue); }
+  .wch-title { font-weight: bold; font-size: 1rem; margin-bottom: 4px; }
+  .wch-topics { font-size: 0.85rem; color: var(--subtle); }
+
+  /* Progress Bar */
+  .progress-track { height: 8px; background: var(--surface2); border-radius: 4px; overflow: hidden; margin: 10px 0; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--blue)); width: 0%; transition: width 0.5s; }
 </style>
 </head>
 <body>
 
-<div class="hero">
-  <h1>📅 Phase 1 — Structured Training Plan</h1>
-  <div class="hero-chips">
-    <div class="chip">🎯 <span>Basic C++ → CF Div2 A/B</span></div>
-    <div class="chip">📧 <span>shaos29@gmail.com</span></div>
+<div class="section">
+  <h1 style="background: linear-gradient(135deg, #60a5fa, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">🥇 NOI Gold 18-Month Roadmap</h1>
+  <p style="color: var(--muted); font-size: 0.9rem;">Sec 1 Training Plan · Thu 3-5pm & Sun 7-9pm</p>
+</div>
+
+<div class="section" style="display: flex; gap: 10px;">
+  <div style="flex: 1; background: var(--surface); padding: 15px; border-radius: 10px; text-align: center;">
+    <div id="progress-percent" style="font-size: 1.5rem; font-weight: bold; color: var(--green);">0%</div>
+    <div style="font-size: 0.7rem; color: var(--muted);">TOTAL PROGRESS</div>
+  </div>
+  <div style="flex: 1; background: var(--surface); padding: 15px; border-radius: 10px; text-align: center;">
+    <div style="font-size: 1.5rem; font-weight: bold; color: var(--blue);">7</div>
+    <div style="font-size: 0.7rem; color: var(--muted);">PHASES</div>
   </div>
 </div>
 
-<div class="tab-row">
-  <button class="tab-btn active" onclick="openTab(event, 'tab-structure')">📐 Structure</button>
-  <button class="tab-btn" onclick="openTab(event, 'tab-schedule')">🗓 Schedule</button>
-  <button class="tab-btn" onclick="openTab(event, 'tab-email')">📧 Emails</button>
+<div class="section">
+  <div class="progress-track"><div class="progress-fill" id="main-progress"></div></div>
 </div>
 
-<div id="tab-structure" class="tab-content active">
-  <div class="section">
-    <div class="section-title">📐 Session Format Overview</div>
-    <p style="color: var(--subtle); font-size: 0.85rem;">Select the Schedule tab to see the weekly breakdown.</p>
+<div class="section">
+  <div class="tab-row">
+    <button class="tab-btn active" onclick="showTab('schedule')">🗓 Schedule</button>
+    <button class="tab-btn" onclick="showTab('structure')">📐 Structure</button>
+  </div>
+
+  <div id="schedule" class="tab-content active">
+    <div id="week-list"></div>
+  </div>
+
+  <div id="structure" class="tab-content">
+    <div class="week-card">
+      <div>
+        <div class="wch-title">Thursday (3:00 - 5:00 PM)</div>
+        <div class="wch-topics">New Concept Teaching + Live Practice</div>
+      </div>
+    </div>
+    <div class="week-card">
+      <div>
+        <div class="wch-title">Sunday (7:00 - 9:00 PM)</div>
+        <div class="wch-topics">Homework Review + Advanced Application</div>
+      </div>
+    </div>
   </div>
 </div>
-
-<div id="tab-schedule" class="tab-content">
-  <div class="section">
-    <div class="section-title">🗓 8-Week Schedule</div>
-    <div id="week-cards" class="week-cards">
-       </div>
-  </div>
-</div>
-
-<div id="tab-email" class="tab-content">
-  </div>
 
 <script>
-  // FUNCTION: Switch between Tabs
-  function openTab(evt, tabName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tab-content");
-    for (i = 0; i < tabcontent.length; i++) {
-      tabcontent[i].style.display = "none";
-    }
-    tablinks = document.getElementsByClassName("tab-btn");
-    for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById(tabName).style.display = "block";
-    evt.currentTarget.className += " active";
-  }
-
-  // DATA: We can store the 8 weeks of NOI topics here
-  const scheduleData = [
-    { week: 1, title: "C++ Basics & Standard I/O", topics: "Variables, Loops, cin/cout" },
-    { week: 2, title: "Arrays & Strings", topics: "Fixed arrays, std::string methods" },
-    { week: 3, title: "STL Containers", topics: "Vectors, Pairs, Iterators" },
-    // We can add the rest of the weeks as we go!
+  const roadmap = [
+    { phase: "1", title: "STL & Sorting", topics: "std::sort, Vectors, Pairs, Custom Comparators" },
+    { phase: "2", title: "Binary Search", topics: "Lower/Upper Bound, Searching on Answers" },
+    { phase: "3", title: "Complete Search", topics: "Recursion, Bitmasking, Permutations" },
+    { phase: "4", title: "Dynamic Programming I", topics: "Memoization, Knapsack, LIS" },
+    { phase: "5", title: "Graph Foundations", topics: "BFS, DFS, Dijkstra, MST" },
+    { phase: "6", title: "Range Queries", topics: "Segment Trees, Fenwick Trees" },
+    { phase: "7", title: "Mastery", topics: "NOI Past Papers, APIO, Mock Contests" }
   ];
 
-  // FUNCTION: Generate the HTML for the schedule
-  const weekContainer = document.getElementById('week-cards');
-  scheduleData.forEach(item => {
-    const card = document.createElement('div');
-    card.className = 'week-card';
-    card.innerHTML = `
-      <div class="week-card-header">
-        <div class="wch-num">${item.week}</div>
-        <div class="wch-info">
+  function showTab(id) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+
+  const list = document.getElementById('week-list');
+  roadmap.forEach((item, index) => {
+    list.innerHTML += `
+      <div class="week-card">
+        <div class="wch-num">${item.phase}</div>
+        <div>
           <div class="wch-title">${item.title}</div>
-          <div class="wch-dates">${item.topics}</div>
+          <div class="wch-topics">${item.topics}</div>
         </div>
       </div>
     `;
-    weekContainer.appendChild(card);
   });
 </script>
-
 </body>
 </html>
